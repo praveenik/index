@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STC SMART FARMING MANAGEMENT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c5282;
+        }
+        .text-highlight {
+            font-weight: bold;
+        }
+        .text-success { color: #38a169; }
+        .text-warning { color: #d69e2e; }
+        .text-danger { color: #e53e3e; }
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .price-item {
+            text-align: center;
+        }
+        .price-label {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+        .price-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c5282;
+        }
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .selection-item {
+            padding: 10px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .selection-item:hover {
+            background-color: #cbd5e0;
+        }
+        .selection-item.active {
+            background-color: #4299e1;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-4xl font-bold text-center text-blue-800 mb-8">STC SMART FARMING MANAGEMENT</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card">
+                <h2>බෝග තේරීම</h2>
+                <div class="selection-grid" id="crop-selection">
+                    <div class="selection-item" data-crop="වී">වී</div>
+                    <div class="selection-item" data-crop="බඩ ඉරිඟු">බඩ ඉරිඟු</div>
+                    <div class="selection-item" data-crop="සෝයා">සෝයා</div>
+                    <div class="selection-item" data-crop="මුං">මුං</div>
+                    <div class="selection-item" data-crop="කව්පි">කව්පි</div>
+                    <div class="selection-item" data-crop="තල">තල</div>
+                    <div class="selection-item" data-crop="රතු ලූනු">රතු ලූනු</div>
+                    <div class="selection-item" data-crop="අල">අල</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>වගා මාසය</h2>
+                <div class="selection-grid" id="month-selection">
+                    <div class="selection-item" data-month="ජනවාරි">ජනවාරි</div>
+                    <div class="selection-item" data-month="පෙබරවාරි">පෙබරවාරි</div>
+                    <div class="selection-item" data-month="මාර්තු">මාර්තු</div>
+                    <div class="selection-item" data-month="අප්‍රේල්">අප්‍රේල්</div>
+                    <div class="selection-item" data-month="මැයි">මැයි</div>
+                    <div class="selection-item" data-month="ජූනි">ජූනි</div>
+                    <div class="selection-item" data-month="ජූලි">ජූලි</div>
+                    <div class="selection-item" data-month="අගෝස්තු">අගෝස්තු</div>
+                    <div class="selection-item" data-month="සැප්තැම්බර්">සැප්තැම්බර්</div>
+                    <div class="selection-item" data-month="ඔක්තෝබර්">ඔක්තෝබර්</div>
+                    <div class="selection-item" data-month="නොවැම්බර්">නොවැම්බර්</div>
+                    <div class="selection-item" data-month="දෙසැම්බර්">දෙසැම්බර්</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-6">
+            <h2>නිර්දේශය</h2>
+            <p id="advice">බෝගය සහ මාසය තෝරන්න</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <div class="card">
+                <h2>පස තත්ත්වය</h2>
+                <p>pH අගය: <span class="text-highlight" id="ph-value">6.5</span></p>
+                <p>නයිට්‍රජන්: <span class="text-highlight text-warning" id="nitrogen-value">මධ්‍යස්ථ</span></p>
+                <p>පොස්පරස්: <span class="text-highlight text-danger" id="phosphorus-value">අඩු</span></p>
+            </div>
+
+            <div class="card">
+                <h2>කාලගුණ පුරෝකථනය</h2>
+                <p>උෂ්ණත්වය: <span class="text-highlight" id="temperature">28°C</span></p>
+                <p>වර්ෂාපතනය: <span class="text-highlight text-warning" id="rainfall">60% අවදානම</span></p>
+                <p>සුළඟ: <span class="text-highlight text-success" id="wind">මද සුළං</span></p>
+            </div>
+
+            <div class="card">
+                <h2>වෙළඳපොල තත්ත්වය</h2>
+                <p>වර්තමාන මිල: <span class="text-highlight" id="current-price">රු. 120/kg</span></p>
+                <p>ඉල්ලුම: <span class="text-highlight text-success" id="demand">ඉහළ</span></p>
+                <p>ප්‍රවණතාව: <span class="text-highlight text-success" id="trend">ඉහළ යමින්</span></p>
+            </div>
+        </div>
+
+        <div class="card mt-6">
+            <h2>මිල ප්‍රවණතා</h2>
+            <div id="chart" class="h-64 bg-gray-100 flex items-center justify-center">
+                Chart placeholder
+            </div>
+            <div class="price-section">
+                <div class="price-item">
+                    <div class="price-label">අවම මිල</div>
+                    <div id="minPrice" class="price-value">රු. 90</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-label">උපරිම මිල</div>
+                    <div id="maxPrice" class="price-value">රු. 150</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-label">සාමාන්‍ය මිල</div>
+                    <div id="avgPrice" class="price-value">රු. 120</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cropAdvice = {
+            'වී': {
+                'ජනවාරි': 'මහ කන්නයේ වගාව සඳහා සුදුසුයි. ජලය කළමනාකරණය කිරීමට සැලකිලිමත් වන්න.',
+                'පෙබරවාරි': 'මහ කන්නය අවසන් වෙමින් පවතී. පසු අස්වනු කළමනාකරණයට සූදානම් වන්න.',
+                'මාර්තු': 'යල කන්නයේ වගාව සඳහා සූදානම් වන්න. බීජ තේරීමේදී සැලකිලිමත් වන්න.',
+                // Add more months...
+            },
+            'බඩ ඉරිඟු': {
+                'ජනවාරි': 'වියළි කාලගුණය නිසා වාරි ජලය භාවිතා කරන්න. පළිබෝධ පාලනය කරන්න.',
+                'පෙබරවාරි': 'අස්වනු නෙලීමට සූදානම් වන්න. නියමිත පරිණත අවධියේදී අස්වනු නෙලන්න.',
+                'මාර්තු': 'වගාව සඳහා සුදුසු කාලයකි. පස සකස් කිරීමට පටන් ගන්න.',
+                // Add more months...
+            },
+            // Add more crops...
+        };
+
+        function updateAdvice(crop, month) {
+            const adviceElement = document.getElementById('advice');
+            if (crop && month) {
+                adviceElement.textContent = cropAdvice[crop][month] || 'තෝරාගත් බෝගය සහ මාසය සඳහා විශේෂිත උපදෙස් නොමැත.';
+            } else {
+                adviceElement.textContent = 'බෝගය සහ මාසය තෝරන්න';
+            }
+        }
+
+        function handleSelection(event, selectionType) {
+            const clickedItem = event.target;
+            if (!clickedItem.classList.contains('selection-item')) return;
+
+            const container = document.getElementById(`${selectionType}-selection`);
+            container.querySelectorAll('.selection-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            clickedItem.classList.add('active');
+
+            const selectedCrop = document.querySelector('#crop-selection .active')?.dataset.crop;
+            const selectedMonth = document.querySelector('#month-selection .active')?.dataset.month;
+            updateAdvice(selectedCrop, selectedMonth);
+        }
+
+        document.getElementById('crop-selection').addEventListener('click', (event) => handleSelection(event, 'crop'));
+        document.getElementById('month-selection').addEventListener('click', (event) => handleSelection(event, 'month'));
+    </script>
+</body>
+</html>
